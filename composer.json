@@ -1,0 +1,29 @@
+{
+    "name": "manadinho/lucent",
+    "description": "Package to track exception for production environment",
+    "license": "MIT",
+    "type": "library",
+    "version": "1.0.0",
+    "autoload": {
+        "psr-4": {
+            "Manadinho\\Lucent\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Muhammad Imran Israr",
+            "email": "mimranisrar6@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "guzzlehttp/guzzle": "^7.0.1"
+    },
+    "extra": {
+        "laravel":{
+            "providers":[
+                "Manadinho\\Lucent\\LucentServiceProvider"
+            ]
+        }
+    }
+}
