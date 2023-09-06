@@ -64,5 +64,5 @@ return [
     | to see
     |
     */
-    'line_count' => 40
+    'line_count' => 40,
 ];
