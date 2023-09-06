@@ -15,9 +15,6 @@ class Codesnippet
     /** @var int */
     private $surroundingLine = 1;
 
-    /** @var int */
-    private $snippetLineCount = 10;
-
     public function surroundingLine(int $surroundingLine): self
     {
         $this->surroundingLine = $surroundingLine;
@@ -65,8 +62,8 @@ class Codesnippet
      */
     private function getBounds($totalNumberOfLineInFile): array
     {
-        $startLine = max($this->surroundingLine - (int)ceil($this->snippetLineCount / 2), 1);
-        $endLine = min($startLine + $this->snippetLineCount - 1, $totalNumberOfLineInFile);
+        $startLine = max($this->surroundingLine - (int)ceil(config('lucent.line_count', 40) / 2), 1);
+        $endLine = min($startLine + config('lucent.line_count', 40) - 1, $totalNumberOfLineInFile);
 
         return [$startLine, $endLine];
     }

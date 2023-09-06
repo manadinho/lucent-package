@@ -53,5 +53,16 @@ return [
     | to Lucent or not
     |
     */
-    'with_user_details' => true
+    'with_user_details' => true,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Line Count
+    |--------------------------------------------------------------------------
+    |
+    | How many lines of the file on which exception is occured you want 
+    | to see
+    |
+    */
+    'line_count' => 40
 ];

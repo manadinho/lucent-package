@@ -144,37 +144,58 @@ class Handler
     }
 
     /**
-     * Get the tracers and corresponding code snippets from a Throwable object.
+     * Get the traces and corresponding code snippets from a Throwable object.
      *
      * @param Throwable $e The throwable object (exception) from which to get tracers and snippets.
      * @return array An array containing two subarrays: one for tracers and one for code snippets.
      */
     private function getTracersAndSnippet(Throwable $e): array
     {
-        $count = 0;
         $traces = [];
         $codeSnippets = [];
+
+        if(!str_contains(str_replace(base_path(), "", $e->getFile()), '/vendor/')) {
+            $codeSnippet = $this->generateCodeSnippet($e->getLine(), $e->getFile());
+            $trace = [
+                        "file" => str_replace(base_path(), "", $e->getFile()),
+                        "line" => $e->getLine()
+                    ];
+            $traces[] = json_encode($trace);
+
+            $codeSnippets[] = json_encode($codeSnippet); 
+
+            return [$traces, $codeSnippets];
+        }
+
         foreach ($e->getTrace() as $trace) {
-            if($count == 5) {
-                break;
-            }
-            
-            if(array_key_exists('line', $trace)){
-                $codeSnippet = (new Codesnippet())
-                ->surroundingLine($trace['line'])
-                ->get($trace['file']);
+
+            if(!str_contains(str_replace(base_path(), "", $trace['file']), '/vendor/')) {
+                $codeSnippet = $this->generateCodeSnippet($trace['line'], $trace['file']);
 
                 $trace['file'] = str_replace(base_path(), "", $trace['file']);
 
-                array_push($traces, json_encode($trace));
+                $traces[] = json_encode($trace);
+    
+                $codeSnippets[] = json_encode($codeSnippet); 
 
-                array_push($codeSnippets, json_encode($codeSnippet));
-
-                //just to add only five stack to avoid memory exhausted issue
-                $count++;
+                break;
             }
         }
       
         return [$traces, $codeSnippets];
+    }
+
+    /**
+     * Generate the code snippet from a trace.
+     *
+     * @param string $traceLine Trace line.
+     * @param string $traceFile Trace file.
+     * @return array An array containing code snippet.
+     */
+    private function generateCodeSnippet(string $traceLine, string $traceFile): array
+    {
+        return (new Codesnippet())
+        ->surroundingLine($traceLine)
+        ->get($traceFile);
     }
 }
