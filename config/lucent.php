@@ -65,4 +65,4 @@ return [
     |
     */
     'line_count' => 40
-];
+]; 
