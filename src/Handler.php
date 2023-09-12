@@ -153,8 +153,9 @@ class Handler
     {
         $traces = [];
         $codeSnippets = [];
-
-        if(!str_contains(str_replace(base_path(), "", $e->getFile()), '/vendor/')) {
+        $file_path = str_replace(base_path(), "", $e->getFile());
+        
+        if(!preg_match('#[\/\\\\]vendor[\/\\\\]#', $file_path)) {
             $codeSnippet = $this->generateCodeSnippet($e->getLine(), $e->getFile());
             $trace = [
                         "file" => str_replace(base_path(), "", $e->getFile()),
@@ -169,7 +170,9 @@ class Handler
 
         foreach ($e->getTrace() as $trace) {
 
-            if(!str_contains(str_replace(base_path(), "", $trace['file']), '/vendor/')) {
+            $file_path = str_replace(base_path(), "", $trace['file']);
+
+            if(!preg_match('#[\/\\\\]vendor[\/\\\\]#', $file_path)) {
                 $codeSnippet = $this->generateCodeSnippet($trace['line'], $trace['file']);
 
                 $trace['file'] = str_replace(base_path(), "", $trace['file']);
