@@ -51,6 +51,7 @@ public function register(): void
     });
 }
 ```
+
 ## Config Options
 Modify the settings of the package by editing the `config/lucent.php` file. Here are the available configuration options:
 
